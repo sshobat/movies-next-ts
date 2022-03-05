@@ -13,7 +13,7 @@ const MovieListItem = ({ movie, commentsMoviesIds }: Props) => {
     return (
         <Link href={`/movie/${movie?.id}`}>
             <a>
-                <li >
+                <li>
                     <p>Movie Title: {movie?.title}</p>
                     <p>Comments: {commNumber}</p>
                 </li>

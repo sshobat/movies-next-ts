@@ -9,22 +9,12 @@ interface Props {
 
 const MoviesList = ({ movies, comments }: Props) => {
     
-    let moviesIds: string[] = [];
     let commentsMoviesIds: string[] = [];
     
-    movies?.forEach((movie: Movie) => {
-        moviesIds.push(movie.id);
-    });
-
     comments?.forEach((comment: Comment) => {
         commentsMoviesIds.push(comment.movieId)
     });
 
-    //console.log(commentsMoviesIds);
-    //console.log(moviesIds);
-
-
-    
     return (
         <ul>
             {movies?.map((movie) => (
