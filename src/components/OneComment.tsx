@@ -17,21 +17,21 @@ const OneComment = ({
     const [username, setUsername] = useState('');
     
     useEffect(() => {
-        fetch(`http://localhost:4000/users?id=${comment.userId}`)
+        fetch(`http://localhost:4000/users?id=${comment?.userId}`)
         .then(response => response.json())
-        .then(data => setUsername(data[0].username))
+        .then(data => setUsername(data[0]?.username))
     }, []);
 
 
     const handleDeleteClick = async () => {
-        await fetch(`http://localhost:4000/comments/${comment.id}`, {
+        await fetch(`http://localhost:4000/comments/${comment?.id}`, {
             method: 'DELETE',
         })
         .then(res => {
             if (res.status !== 200) {
                 return;
             }
-            setComments(comments?.filter(item => item.id != comment.id))
+            setComments(comments?.filter(item => item.id != comment?.id))
         })
         .catch((err) => {
             console.log(err);
@@ -41,7 +41,7 @@ const OneComment = ({
     return (
         <>
             <li>
-                {comment.body}
+                {comment?.body}
                 <br />
                 <p style={{display:'inline'}}>Author:</p>
                 {username}
@@ -51,9 +51,7 @@ const OneComment = ({
                     >
                         Delete comment
                     </button>
-                    <button
-                        onClick={() => Window.openDialog()}
-                    >
+                    <button>
                         Edit comment
                     </button>
                 </div>

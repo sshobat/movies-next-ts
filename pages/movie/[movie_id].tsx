@@ -15,24 +15,37 @@ const MoviePage = ({query}: Props) => {
     const [movie, setMovie] = useState<Movie>();
     const [comments, setComments] = useState<Comment[]>([]);
 
-
     useEffect(() => {
-        fetch(`http://localhost:4000/movies?id=${query.movie_id}`)
-        .then(res => res.json())
-        .then(data => setMovie(data[0]))
+        fetchMovie();
     }, []);
 
     useEffect(() => {
-        fetch(`http://localhost:4000/comments?movieId=${query.movie_id}`)
-        .then(res => res.json())
-        .then(data => setComments(data));
-        console.log(movie);
+        fetchComments();
     }, [movie]);
 
-    
-    ///////////////////////////////////////////////////////////////////////////
+    const fetchMovie = async() => {
+        await fetch(`http://localhost:4000/movies?id=${query.movie_id}`)
+        .then(res => res.json())
+        .then(data => setMovie(data[0]))
+        .catch((err) => {
+            console.log(err);
+        });
+    }
 
-    const onAdd = async (id: number, body: string, userId: string) => {
+    const fetchComments = async() => {
+        fetch(`http://localhost:4000/comments?movieId=${query.movie_id}`)
+        .then(res => res.json())
+        .then(data => setComments(data))
+        .catch((err) => {
+            console.log(err);
+        });
+    }
+
+    const onAdd = async (
+        id: number, 
+        body: string, 
+        userId: string
+        ) => {
         await fetch(`http://localhost:4000/comments`, {
           method: "POST",
           body: JSON.stringify({
@@ -59,8 +72,6 @@ const MoviePage = ({query}: Props) => {
             console.log(err);
           });
       };
-
-    ////////////////////////////////////////////////////////////////////////////////
 
     return (
         <>

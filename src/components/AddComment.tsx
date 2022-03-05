@@ -6,11 +6,23 @@ const AddComment = ({ onAdd }: any) => {
 
         e.preventDefault();
 
-        onAdd(Number(e.target.id.value), e.target.body.value, e.target.userId.value);
+        let id = e.target.id.value;
+        let comment = e.target.body.value;
+        let userId = e.target.userId.value;
 
-        e.target.id.value = "";
-        e.target.body.value = "";
-        e.target.userId.value = "";
+        if (e.target.id.value && e.target.body.value && e.target.userId.value) {
+            
+            onAdd(Number(id), comment, userId);
+
+            e.target.id.value = "";
+            e.target.body.value = "";
+            e.target.userId.value = "";
+
+        } else {
+            alert('Please fill all fields!')
+        }
+      
+        
     };
     
     return (
