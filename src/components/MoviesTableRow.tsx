@@ -13,9 +13,7 @@ const MoviesTableRow = ({ movie, commentsMoviesIds }: Props) => {
     const commNumber = commentsMoviesIds?.filter(item => (item === movie?.id)).length;
     
     return (
-        <TableRow
-            sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-        >
+        <TableRow>
             <Link href={`/movie/${movie?.id}`}>
                 <a>
                     <TableCell component="th" scope="row">
@@ -26,7 +24,6 @@ const MoviesTableRow = ({ movie, commentsMoviesIds }: Props) => {
             <TableCell align="right">
                 {commNumber}
             </TableCell>
-
         </TableRow>
     );
 };

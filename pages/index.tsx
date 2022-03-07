@@ -22,12 +22,12 @@ const Home: NextPage = () => {
   const commentsFetcher = () => fetch('http://localhost:4000/comments').then(toJSON);
 
 
-const { data: movies, isLoading: isLoadingMovies, error: errorMovies } = useQuery('movies', moviesFetcher);
+  const { data: movies, isLoading: isLoadingMovies, error: errorMovies } = useQuery('movies', moviesFetcher);
 
-const { data: comments, isLoading: isLoadingComments, error: errorComments } = useQuery('comments', commentsFetcher)
+  const { data: comments, isLoading: isLoadingComments, error: errorComments } = useQuery('comments', commentsFetcher)
 
-//if (isLoading) return 'Loading';
-//if (error) return error.message;
+  //if (isLoading) return 'Loading';
+  //if (error) return error.message;
 
   return (
     <>

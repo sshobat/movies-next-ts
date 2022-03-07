@@ -1,6 +1,7 @@
 import { Comment } from "../models/Models";
 import {ReactQueryCacheProvider, QueryCache, useQuery} from 'react-query';
 import { useEffect, useState } from "react";
+import EditComment from './EditComment';
 
 interface Props {
     comment: Comment,
@@ -14,14 +15,15 @@ const OneComment = ({
     setComments
 }: Props) => {
 
+    const [displayComment, setDisplayComment] = useState(comment?.body);
     const [username, setUsername] = useState('');
-    
+    const [isEdit, setIsEdit] = useState(false);
+
     useEffect(() => {
         fetch(`http://localhost:4000/users?id=${comment?.userId}`)
         .then(response => response.json())
         .then(data => setUsername(data[0]?.username))
-    }, []);
-
+    }, [displayComment]);
 
     const handleDeleteClick = async () => {
         await fetch(`http://localhost:4000/comments/${comment?.id}`, {
@@ -35,13 +37,41 @@ const OneComment = ({
         })
         .catch((err) => {
             console.log(err);
-          });
+        });
     };
+
+    const PostCommentChange = async (
+        body: string,
+        ) => {
+        await fetch(`http://localhost:4000/comments/${comment.id}`, {
+          method: "PATCH",
+          body: JSON.stringify({
+            body: body,
+          }),
+          headers: {
+            "Content-type": "application/json; charset=UTF-8",
+          },
+        })
+        .then((res) => {
+            if (res.status !== 201) {
+                return;
+            } else {
+                return res.json();
+            }
+        })
+        .catch((err) => {
+            console.log(err);
+        });
+    };
+
+    const handleEditClick = () => {
+        !isEdit ? setIsEdit(true) : setIsEdit(false);
+    }
 
     return (
         <>
             <li>
-                {comment?.body}
+                {displayComment}
                 <br />
                 <p style={{display:'inline'}}>Author:</p>
                 {username}
@@ -51,10 +81,20 @@ const OneComment = ({
                     >
                         Delete comment
                     </button>
-                    <button>
+                    <button
+                        onClick={() => handleEditClick()}
+                    >
                         Edit comment
                     </button>
                 </div>
+                {isEdit && 
+                <EditComment 
+                    setIsEdit={setIsEdit}
+                    setDisplayComment={setDisplayComment}
+                    comment={comment.body}
+                    PostCommentChange={PostCommentChange}
+                    displayComment={displayComment}
+                />}
             </li>
         </>
     );

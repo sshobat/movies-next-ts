@@ -7,7 +7,9 @@ import AddComment from '../../src/components/AddComment';
 import { v4 as uuidv4 } from 'uuid';
 
 interface Props {
-    query: any,
+    query: {
+        movie_id: string,
+    },
 };
 
 const MoviePage = ({query}: Props) => {
@@ -33,7 +35,7 @@ const MoviePage = ({query}: Props) => {
     }
 
     const fetchComments = async() => {
-        fetch(`http://localhost:4000/comments?movieId=${query.movie_id}`)
+        await fetch(`http://localhost:4000/comments?movieId=${query.movie_id}`)
         .then(res => res.json())
         .then(data => setComments(data))
         .catch((err) => {
@@ -42,14 +44,12 @@ const MoviePage = ({query}: Props) => {
     }
 
     const onAdd = async (
-        id: number, 
         body: string, 
-        userId: string
+        userId: string,
         ) => {
         await fetch(`http://localhost:4000/comments`, {
           method: "POST",
           body: JSON.stringify({
-            id: id,
             body: body,
             movieId: movie?.id,
             userId: userId,
@@ -79,6 +79,7 @@ const MoviePage = ({query}: Props) => {
             <p>Movie rank: {movie?.rank}</p>
             <AddComment 
                 onAdd={onAdd}
+                startQuery={query}
             />
             <ul>
             Comments:
@@ -110,10 +111,6 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({ req, res, 
 };
 
 export default MoviePage;
-
-
-
-
 
 
 /*
